@@ -19,8 +19,9 @@ class EmployersListItem extends React.Component  {
             rise: !rise
         }))
     }
+   
     render() {
-        const {name, salary, id} = this. props;
+        const {name, salary, id, onRemovePerson} = this.props;
         const {increase, rise} = this.state;
         let classNames = "list-group-item d-flex justify-content-between";
         if(increase) {
@@ -42,7 +43,8 @@ class EmployersListItem extends React.Component  {
                     </button>
     
                     <button type="button"
-                            className="btn-trash btn-sm ">
+                    onClick={onRemovePerson}
+                        className="btn-trash btn-sm ">
                         <i className="fas fa-trash"></i>
                     </button>
                     <i className="fas fa-star"></i>
