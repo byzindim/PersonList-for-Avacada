@@ -20,8 +20,9 @@ class App extends React.Component {
                 {
                     id: 3, "name": "Anzelika Byzina", "salary": "50000", "increase": false, rise: false,
                 },
-            
             ],
+            valueSearch: '',
+            filter: 'all',
         }
     }
     
@@ -75,28 +76,63 @@ class App extends React.Component {
             })  
         }))
     }
+    onValueSearch = (valueSearch) => {
+        this.setState({valueSearch});
+    }
+    onListChange = (items, valueSearch) => {
+        if (valueSearch.length === 0) {
+            return items;
+        }
+        return items.filter(item => {
+            return item.name.indexOf(valueSearch) > -1
+        })
+    }
+    
+    onIncreasePerson = (items, filter) => {
+        switch (filter) {
+            case 'rise':
+                return items.filter(item => item.rise)
+            case 'salary':
+                return items.filter(item => item.salary > 1000)
+            default:
+                return items
+        }
+    }
+
+    onFilterSelect = (filter) => {
+        this.setState({filter});
+
+    }
    render() {
+    const {data, valueSearch, filter} = this.state;
     let employees = this.state.data.length;
     let increased = this.state.data.filter(item => item.increase).length;
+    const visibleData = this.onIncreasePerson(this.onListChange(data, valueSearch), filter)
     return (
         <div className='app'>
-            <AppInfo employees={employees} increased={increased}/>
+            <AppInfo 
+                employees={employees} 
+                increased={increased}
+            />
             <div className="search-panel">
-                <SearchPanel />
-                <AppFilter />
+                <SearchPanel onValueSearch={this.onValueSearch}/>
+                <AppFilter 
+                    data = {visibleData} 
+                    onFilterSelect={this.onFilterSelect} 
+                    filter={filter}
+                />
             </div>
             <EmployersList 
-            data = {this.state.data} 
-            onRemovePerson={this.onRemovePerson}
-            onToggleIncrease={this.onToggleIncrease}
-            onToggleRise={this.onToggleRise}
+                data = {visibleData} 
+                onRemovePerson={this.onRemovePerson}
+                onToggleIncrease={this.onToggleIncrease}
+                onToggleRise={this.onToggleRise}
+                onListChange={this.onListChange}
             />
             <EmployersAddForm onAddPerson={this.onAddPerson}/>
         </div>
     )
-   }
-   
+   } 
 }
-
 
 export default App;
