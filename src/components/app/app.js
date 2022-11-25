@@ -35,6 +35,10 @@ class App extends React.Component {
         })
     }
 
+    onChangeValueInput = (salary) => {
+        this.setState({salary})
+    }
+
     onAddPerson = (name, salary) => {
         const newPerson = {
             name,
@@ -86,6 +90,16 @@ class App extends React.Component {
         return items.filter(item => {
             return item.name.indexOf(valueSearch) > -1
         })
+
+    }
+
+    onChangeSalary = (items, salary) => {
+      if(salary) {
+        return items;
+      }
+      return {
+        ...items, salary: !salary
+      }
     }
     
     onIncreasePerson = (items, filter) => {
@@ -104,10 +118,10 @@ class App extends React.Component {
 
     }
    render() {
-    const {data, valueSearch, filter} = this.state;
+    const {data, valueSearch, filter, salary} = this.state;
     let employees = this.state.data.length;
     let increased = this.state.data.filter(item => item.increase).length;
-    const visibleData = this.onIncreasePerson(this.onListChange(data, valueSearch), filter)
+    const visibleData = this.onIncreasePerson(this.onListChange(data, valueSearch), this.onChangeSalary(data, salary), filter)
     return (
         <div className='app'>
             <AppInfo 
@@ -128,6 +142,8 @@ class App extends React.Component {
                 onToggleIncrease={this.onToggleIncrease}
                 onToggleRise={this.onToggleRise}
                 onListChange={this.onListChange}
+                onChangeSalary={this.onChangeSalary}
+                onChangeValueInput={this.onChangeValueInput}
             />
             <EmployersAddForm onAddPerson={this.onAddPerson}/>
         </div>

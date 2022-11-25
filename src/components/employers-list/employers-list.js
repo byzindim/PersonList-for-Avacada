@@ -3,7 +3,7 @@ import EmployersListItem from '../employers-list-item/employers-list-item';
 
 
 
-const EmployersList = ({data, onRemovePerson, onToggleIncrease, onToggleRise}) => {
+const EmployersList = ({data, onRemovePerson, onToggleIncrease, onToggleRise, onChangeValueInput}) => {
             const elements = data.map(item => {
                 return (
                     <EmployersListItem 
@@ -14,6 +14,7 @@ const EmployersList = ({data, onRemovePerson, onToggleIncrease, onToggleRise}) =
                         onRemovePerson={() => onRemovePerson(item.id)}
                         onToggleIncrease={() => onToggleIncrease(item.id)}
                         onToggleRise={() => onToggleRise(item.id)}
+                        onChangeValueInput={() => onChangeValueInput(item.id)}
                     />
                 ) 
             })
